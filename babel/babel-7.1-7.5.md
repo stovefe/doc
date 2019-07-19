@@ -66,7 +66,7 @@ class A {
 
 ### 타입스크립트와의 비교
 
-실제로 타입스크립트에서는 클래스의 `private`, `protected` 문법을 제공하지만, 이는 실제로 컴파일 단계에서의 에러는 잡아 내지만 런타임 에러를 막아주진 않는다. 아래의 typescript 예제를 확인해보자.
+실제로 타입스크립트에서는 클래스의 `private`, `protected` 문법을 제공하지만, 이는 실제로 컴파일 단계에서의 에러는 잡아 내지만 런타임 에러를 막아주진 않는다([구현하지 못해서이기 때문은 아니다](https://github.com/Microsoft/TypeScript/issues/564#issuecomment-291754335)). 아래의 typescript 예제를 확인해보자.
 
 ### 예제
 
@@ -114,9 +114,19 @@ addTen(2); // 12
 - `bind` 메서드의 경우 템플릿 리터럴과 같이 사용하기 어렵다.
 - arrow function의 경우 코드가 길어지고 장황해지는 경향이 있다.
 
-하지만, partial application 문법을 이용하면 좀더 명확한 의도를 드러내고, 유연하게 함수를 표현 할 수 있다.
+하지만, partial application 문법을 이용하면 좀더 명확히 의도를 드러내고, 유연하게 함수를 표현 할 수 있다.
 
-아래의 문법을 보자.
+partial application 문법은 `?` 토큰을 함수 인자에 포함하여 표현한다. 위의 예제였던 `add` 함수를 partial application을 이용하여 작성하면 아래와 같다.
+
+```js
+function add(x, y) {
+  return x + y;
+}
+
+const addTen = add(?, 10);
+```
+
+기본적으로 partial application 문법은 함수 인자에만 사용 하도록 되어 있기 때문에 몇가지 제약사항이 있다. 아래 예제를 확인해보자.
 
 ```js
 // valid
@@ -144,7 +154,7 @@ super(?)          // `?` not supported in |SuperCall|
 
 Pipeline Operator는 F#, OCaml, Elixir, Elm, Julia, Hack과 LiveScript 언어에서 지원하는 문법과 비슷한데, 함수형 프로그래밍 언어에서 유연하게 함수 합성을 해주는 문법이다.
 
-기존에는 라이브러리를 사용하거나 `compose`, `pipe` 등의 함수를 만들어 합성하는 방법을 사용 했다.
+기존에는 중첩된 함수를 사용, 라이브러리를 사용하거나 `compose`, `pipe` 등의 함수를 만들어 합성하는 방법을 사용 했다.
 
 - [lodash flow](https://lodash.com/docs/4.17.14#flow)
 - [ramda pipe](https://ramdajs.com/docs/#pipe)
@@ -154,40 +164,63 @@ Pipeline Operator는 F#, OCaml, Elixir, Elm, Julia, Hack과 LiveScript 언어에
 function square(n) {
   return n * n;
 }
-function add(a, b) {
-  return a + b;
+function add10(a) {
+  return a + 10;
 }
 
+// 중첩 함수
+square(add10(10));
+
 // loadsh
-_.flow([add, square])(1, 2);
+_.flow([add10, square])(10);
 // => 9
 
 // ramda
-R.pipe([add, square])(1, 2);
+R.pipe([add10, square])(10);
 
 R.compose(
   square,
   add
 )(1, 2);
 
-// custom
+// custom compose function
 const compose = (...fns) => fns.reduce((f, g) => (...args) => f(g(...args)));
 
 compose(
   square,
-  add
+  add10
 )(1, 2);
 ```
 
-이 pipeline operator는 위의 문법의 문법 설탕(syntax sugar)으로 생각해도 좋다. 현재 제안되고 있는 방식은 5가지 인데, 지금 바벨 플러그인은 3가지 옵션을 제공한다.
+Pipeline operator는 `|>`을 기반으로 한다. 먼저 위의 예제를 pipeline operator로 변경하면 아래와 같다.
+
+```js
+function square(n) {
+  return n * n;
+}
+function add10(a) {
+  return a + 10;
+}
+
+10 |> add10 |> square;
+```
+
+이 pipeline operator는 위 함수의 문법 설탕(syntax sugar)으로 생각해도 좋다. `|>` 키워드를 제외하고 구현에 대한 구체적인 방법은 확정되지 않았지만 제안되고 있는 방식은 5가지가 있다. 그중에서 지금 바벨 플러그인은 3가지 옵션을 제공한다.
+
+먼저 예제를 확인해보자.
 
 #### Minimal
+
+가장 기본적인 형태의 문법을 제공한다. pipeline operator에서는 point free 스타일의 함수만 사용 할 수 있다.
 
 ```js
 let result = 'hello' |> doubleSay |> capitalize |> exclaim;
 ```
 
 #### F# pipeline
+
+F# 스타일의 문법을 제공한다. 여기에서는 point free 스타일과 arrow 함수를 사용할 수 있다.
+이 제안에서는 함수 파라미터를 여러개 사용하거나 순서를 변경 할 수 있다.
 
 ```js
 let newScore = person.score
@@ -198,6 +231,8 @@ let newScore = person.score
 
 #### Smart pipeline(7.3.0)
 
+이 제안은 `#` 토큰을 사용하여 함수에 파라미터를 설정 할 수 있다.
+
 ```js
 let newScore = person.score
   |> double
@@ -205,9 +240,9 @@ let newScore = person.score
   |> boundScore(0, 100, #);
 ```
 
-또한, partial application proposal과 같이 사용 할 수도 있다.
-
 #### Partial(7.4.0)
+
+또한, partial application proposal과 같이 사용 할 수도 있다.
 
 ```js
 let newScore = person.score
