@@ -70,17 +70,11 @@ class A {
 
 ### 예제
 
-#### babel
+#### [babel](https://codesandbox.io/s/misty-bash-20hmc)
 
-https://codesandbox.io/s/misty-bash-20hmc
+#### [typescript](https://codesandbox.io/s/elegant-mcclintock-gncw7)
 
-#### typescript
-
-https://codesandbox.io/s/elegant-mcclintock-gncw7
-
-#### compiled
-
-https://babeljs.io/repl#?babili=false&browsers=&build=&builtIns=false&spec=false&loose=false&code_lz=MYGwhgzhAEAKBOBLAbmALgUwMLitA3gFDTQDEADvAPbkCC0AvNAESUrobSU3S3MDcxLtXIAhRi3IBXAEYhEwYT1EDCQ0gFsMaABZUAJrQAUASgJCS8bVPgA7aLsQQAdBRG1BJAL5qSW3QaipuYkltZ2DjpOztxintA-Qv56-ljBRKHQVmg29o4ubjQeQj6JwFS2EGhciky2GADucEiomDiQEKaChOWVVCAYziBUAOZG5MDOyYGmADQ1JoJAA&debug=false&forceAllTransforms=false&shippedProposals=false&circleciRepo=&evaluate=false&fileSize=false&timeTravel=false&sourceType=module&lineWrap=true&presets=stage-1&prettier=false&targets=&version=7.5.4&externalPlugins=
+#### [compiled](https://babeljs.io/repl#?babili=false&browsers=&build=&builtIns=false&spec=false&loose=false&code_lz=MYGwhgzhAEAKBOBLAbmALgUwMLitA3gFDTQDEADvAPbkCC0AvNAESUrobSU3S3MDcxLtXIAhRi3IBXAEYhEwYT1EDCQ0gFsMaABZUAJrQAUASgJCS8bVPgA7aLsQQAdBRG1BJAL5qSW3QaipuYkltZ2DjpOztxintA-Qv56-ljBRKHQVmg29o4ubjQeQj6JwFS2EGhciky2GADucEiomDiQEKaChOWVVCAYziBUAOZG5MDOyYGmADQ1JoJAA&debug=false&forceAllTransforms=false&shippedProposals=false&circleciRepo=&evaluate=false&fileSize=false&timeTravel=false&sourceType=module&lineWrap=true&presets=stage-1&prettier=false&targets=&version=7.5.4&externalPlugins=)
 
 ### 참고
 
