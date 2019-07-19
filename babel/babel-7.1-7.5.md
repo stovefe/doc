@@ -2,9 +2,9 @@
 
 [바벨(Babel)](https://babeljs.io/)의 메이저 버전이 7로 변경되었고 현재 7.5 버전까지 업데이트가 되었다.
 이렇게 바벨 버전이 업데이트 되면서 버그 수정과 더불어 tc39 proposal 중 일부가 추가적으로 지원되고 있다.
-아직은 스테이지 상태이기 때문에 확정은 아니지만 아래의 문법은 어떠한 형태로든 제공 할 가능성이 크다. 추가된 문법을 알아보고 어떤 변화가 있는지 확인해보자.
+아직은 스테이지 상태이기 때문에 확정은 아니지만 아래의 문법은 어떠한 형태로든 제공 할 것으로 보인다.
 
-7.5 버전까지 추가 된 문법은 크게 클래스(class)관련 private property, method, static과 함수(function) 관련 partial application과 pipeline operator이다. 각각 어떤 문법인지 확인해보고 장단점을 파악해보자.
+7.5 버전까지 추가 된 문법은 크게 클래스(class)관련 private property, method, static과 함수(function) 관련 partial application과 pipeline operator이다. 각각 어떤 문법인지 확인해보고 장단점을 확인해보자.
 
 ## Class Private Property, Method, Static (stage 3)
 
